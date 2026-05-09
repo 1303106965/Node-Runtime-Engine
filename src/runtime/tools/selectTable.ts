@@ -15,7 +15,7 @@
 //   },
 // };
 import { RuntimeTool } from "../types/tool";
-import { buildSelect } from "../compiler/select/buildSelect";
+import { buildSelect } from "../compiler/selectSingle/buildSelect";
 
 export const selectTableTool: RuntimeTool = {
   async execute(args: any) {
