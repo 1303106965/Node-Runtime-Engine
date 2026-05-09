@@ -22,20 +22,20 @@ const config: sql.config = {
     trustServerCertificate: true,
   },
 };
-
 export async function executeSqlServer(
-  options: ExecuteSqlOptions
+  sqlText: string,
+  params: any[] = []
 ) {
   const pool = await sql.connect(config);
 
   const request = pool.request();
 
-  // 参数绑定
-  (options.params || []).forEach((value, index) => {
+  // 参数绑定，防止 SQL 注入
+  params.forEach((value, index) => {
     request.input(`p${index}`, value);
   });
 
-  const result = await request.query(options.sqlText);
+  const result = await request.query(sqlText);
 
   return result.recordset;
 }
