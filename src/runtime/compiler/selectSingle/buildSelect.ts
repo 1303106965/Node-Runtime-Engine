@@ -1,6 +1,6 @@
 import { buildColumns } from "./buildColumns";
 import { buildWhere } from "../buildWhere";
-
+import { buildPagination } from "./buildPagination";
 interface SelectConfig {
   mainTable: string;
   columns: any[];
@@ -9,13 +9,12 @@ interface SelectConfig {
 
 export function buildSelect(config: SelectConfig) {
   const columnsSql = buildColumns(config.columns);
-
-  let sql = `
-SELECT ${columnsSql}
-FROM [${config.mainTable}]
-`;
-
+  const paginationSql = buildPagination(config.paginationNode);
   let params: any[] = [];
+  let sql = `
+  SELECT ${columnsSql}
+  FROM [${config.mainTable}]
+  `;
 
   if (config.whereCondition) {
     const whereResult = buildWhere(config.whereCondition);
@@ -24,6 +23,14 @@ FROM [${config.mainTable}]
 
     params = whereResult.params;
   }
+
+  sql += paginationSql;
+
+  // if (config.whereCondition) {
+  //   const whereResult = buildWhere(config.whereCondition);
+  //   sql += ` WHERE ${whereResult.sql}`;
+  //   params = whereResult.params;
+  // }
 
   return {
     sql: sql.trim(),

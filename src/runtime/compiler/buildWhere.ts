@@ -31,7 +31,7 @@ export function buildWhere(
   }
 
   // EQUAL
-  if (node.type === "EQUAL") {
+  if (node.type === "EQ") {
     const paramName = `@p${params.length}`;
 
     params.push(node.value);
