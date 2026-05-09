@@ -15,7 +15,8 @@
 //   },
 // };
 import { RuntimeTool } from "../types/tool";
-import { buildSelect } from "../compiler/selectSingle/buildSelect";
+import { buildSelect } from "../compiler/select/buildSelect";
+import { executeSqlServer } from "../executor/sqlserver";
 
 export const selectTableTool: RuntimeTool = {
   async execute(args: any) {
@@ -23,10 +24,16 @@ export const selectTableTool: RuntimeTool = {
 
     const result = buildSelect(data);
 
+    const rows = await executeSqlServer({
+      sqlText: result.sql,
+      params: result.params,
+    });
+
     return {
       success: true,
       sql: result.sql,
       params: result.params,
+      rows,
     };
   },
 };
