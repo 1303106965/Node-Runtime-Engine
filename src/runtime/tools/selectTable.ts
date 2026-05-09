@@ -1,6 +1,6 @@
 import { RuntimeTool } from "../types/tool";
 import { buildSelect } from "../compiler/selectSingle/buildSelect";
-import { executeSqlServer } from "../executor/sqlserver";
+import { executeRuntime } from "../executeRuntime";
 
 export const selectTableTool: RuntimeTool = {
   async execute(args: any) {
@@ -10,22 +10,29 @@ export const selectTableTool: RuntimeTool = {
     const result = buildSelect(data);
 
     // 执行数据库
-    const rows = await executeSqlServer(
-      result.sql,
-      result.params
-    );
+    // const rows = await executeSqlServer(
+    //   result.sql,
+    //   result.params
+    // );
 
-    return {
-      success: true,
+    // return {
+    //   success: true,
 
-      // 返回 SQL 方便调试
+    //   // 返回 SQL 方便调试
+    //   sql: result.sql,
+
+    //   // 返回参数
+    //   params: result.params,
+
+    //   // 数据库结果
+    //   rows,
+    // };
+
+
+    // Runtime Execute
+    return executeRuntime({
       sql: result.sql,
-
-      // 返回参数
       params: result.params,
-
-      // 数据库结果
-      rows,
-    };
+    });
   },
 };

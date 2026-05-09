@@ -4,7 +4,7 @@ import path from "path";
 dotenv.config({
   path: path.resolve(
     process.cwd(),
-    ".env"
+    "src/runtime/executor/.env"
   )
 });
 interface ExecuteSqlOptions {
@@ -15,7 +15,7 @@ interface ExecuteSqlOptions {
 const config: sql.config = {
   user: "sa",
   password:process.env.SQLSERVER_PASSWORD,
-  server: "sqlserver",
+  server: "43.156.73.183",
   database: "sample",
   options: {
     encrypt: false,
@@ -34,7 +34,8 @@ export async function executeSqlServer(
   params.forEach((value, index) => {
     request.input(`p${index}`, value);
   });
-
+  console.log("🎈sql:",sqlText);
+  
   const result = await request.query(sqlText);
 
   return result.recordset;

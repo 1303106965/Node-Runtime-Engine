@@ -1,4 +1,4 @@
-import { quoteField } from "./utils/quoteField";
+import { quoteField } from "../utils/quoteField";
 
 /**
  * buildWhere 返回结果
