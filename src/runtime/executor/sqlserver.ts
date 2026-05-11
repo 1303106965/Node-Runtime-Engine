@@ -2,10 +2,7 @@ import sql from "mssql";
 import dotenv from "dotenv";
 import path from "path";
 dotenv.config({
-  path: path.resolve(
-    process.cwd(),
-    "src/runtime/executor/.env"
-  )
+  path: path.resolve(process.cwd(), "src/runtime/executor/.env"),
 });
 interface ExecuteSqlOptions {
   sqlText: string;
@@ -14,7 +11,7 @@ interface ExecuteSqlOptions {
 
 const config: sql.config = {
   user: "sa",
-  password:process.env.SQLSERVER_PASSWORD,
+  password: process.env.SQLSERVER_PASSWORD,
   server: "43.156.73.183",
   database: "sample",
   options: {
@@ -22,10 +19,7 @@ const config: sql.config = {
     trustServerCertificate: true,
   },
 };
-export async function executeSqlServer(
-  sqlText: string,
-  params: any[] = []
-) {
+export async function executeSqlServer(sqlText: string, params: any[] = []) {
   const pool = await sql.connect(config);
 
   const request = pool.request();
@@ -34,8 +28,8 @@ export async function executeSqlServer(
   params.forEach((value, index) => {
     request.input(`p${index}`, value);
   });
-  console.log("🎈sql:",sqlText);
-  
+  console.log("🎈sql:", sqlText);
+
   const result = await request.query(sqlText);
 
   return result.recordset;
